@@ -44,5 +44,14 @@ export default Ember.Route.extend({
     Ember.set(model, 'databaseArray', databaseArray);
 
     setTimeout(this.loadSamples.bind(this), TIMEOUT);
+    var now = new Date().getTime();
+    var controller = this.controllerFor('application');
+    var duration = now - this.get('last');
+    if (!controller.get('maxRenderTime') || controller.get('maxRenderTime') < duration) {
+      controller.set('maxRenderTime', duration);
+    }
+    controller.set('renderTime', duration);
+
+    this.set('last', now);
   }
 });
